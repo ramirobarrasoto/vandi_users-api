@@ -17,7 +17,7 @@ func GetUser(c *gin.Context) {
 	getErr := services.GetUser(&user)
 
 	if getErr != nil {
-		//TODO: handler the error
+		//TODO: handler the error please
 		return
 	}
 
