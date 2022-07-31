@@ -14,25 +14,26 @@ var id int64
 
 func GetUser(c *gin.Context) {
 
-	getErr := services.GetUser(&user)
+	getData, getErr := services.GetUser(&user)
 
 	if getErr != nil {
 		//TODO: handler the error please
 		return
 	}
 
-	c.JSON(http.StatusOK, nil)
+	c.JSON(http.StatusOK, getData)
 }
 
 func GetUserById(c *gin.Context) {
-	getErr := services.GetUserById(id)
+
+	result, getErr := services.GetUserById(id)
 
 	if getErr != nil {
 		//TODO: handler the error
 		return
 	}
 
-	c.JSON(http.StatusCreated, nil)
+	c.JSON(http.StatusCreated, result)
 }
 func CreateUser(c *gin.Context) {
 
