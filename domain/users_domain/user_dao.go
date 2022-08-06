@@ -2,7 +2,7 @@ package users_domain
 
 import (
 	"fmt"
-	"time"
+	"vandi_users-api/utils/date_utils"
 	"vandi_users-api/utils/errors"
 )
 
@@ -29,7 +29,6 @@ func (user *User) GetUserById(id int64) (*User, *errors.RestErr) {
 	user.LastName = result.LastName
 	user.Email = result.Email
 	user.DateCreated = result.DateCreated
-	fmt.Print("repo salida", result.Id)
 	return result, nil
 }
 
@@ -46,8 +45,8 @@ func (user *User) SaveUser() *errors.RestErr {
 		}
 		return errors.NewBadRequestError(fmt.Sprintf("user %d already exists", user.Id))
 	}
-	now := time.Now().UTC()
-	user.DateCreated = now.Format("2006-01-02T15:04:05Z")
+
+	user.DateCreated = date_utils.GetNowString()
 	usersDB[user.Id] = user
 	return nil
 }
