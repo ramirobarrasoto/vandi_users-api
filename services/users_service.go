@@ -1,7 +1,6 @@
 package services
 
 import (
-	"fmt"
 	user_domain "vandi_users-api/domain/users_domain"
 	"vandi_users-api/utils/errors"
 )
@@ -18,13 +17,10 @@ func GetUser(user *user_domain.User) (map[int64]*user_domain.User, *errors.RestE
 func GetUserById(userId int64) (*user_domain.User, *errors.RestErr) {
 
 	result := &user_domain.User{Id: userId}
-	fmt.Print("service ingreso", result)
-	user, err := result.GetUserById()
+	user, err := result.GetUserById(userId)
 	if err != nil {
-
 		return nil, err
 	}
-	fmt.Print("service", result.Id)
 	return user, nil
 }
 

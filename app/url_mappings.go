@@ -10,7 +10,7 @@ func mapsUrl() {
 	router.GET("/ping", ping.Ping)
 	//for users
 	router.GET("/users", users.GetUser)
-	router.GET("/users/:id", users.GetUserById)
+	router.GET("/users/:user_id", users.GetUserById)
 	router.POST("/users", users.CreateUser)
 	router.PUT("/users/:id", users.PutUser)
 	router.DELETE("/users/:id", users.DeleteUser)

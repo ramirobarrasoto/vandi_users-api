@@ -2,6 +2,7 @@ package users
 
 import (
 	"net/http"
+	"strconv"
 	"vandi_users-api/domain/users_domain"
 	"vandi_users-api/services"
 	"vandi_users-api/utils/errors"
@@ -26,14 +27,21 @@ func GetUser(c *gin.Context) {
 
 func GetUserById(c *gin.Context) {
 
-	result, getErr := services.GetUserById(id)
+	userId, userErr := strconv.ParseInt(c.Param("user_id"), 10, 64)
 
-	if getErr != nil {
-		//TODO: handler the error
+	if userErr != nil {
+		err := errors.NewBadRequestError("invalid format, user id should be a number")
+		c.JSON(err.Status, err)
 		return
 	}
 
-	c.JSON(http.StatusCreated, result)
+	user, getErr := services.GetUserById(userId)
+	if getErr != nil {
+		err := errors.NewNotFoundError("user not found")
+		c.JSON(getErr.Status, err)
+		return
+	}
+	c.JSON(http.StatusOK, user)
 }
 func CreateUser(c *gin.Context) {
 

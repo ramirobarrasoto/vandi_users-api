@@ -19,14 +19,11 @@ func (user *User) GetUser() (map[int64]*User, *errors.RestErr) {
 	return usersDB, nil
 }
 
-func (user *User) GetUserById() (*User, *errors.RestErr) {
+func (user *User) GetUserById(id int64) (*User, *errors.RestErr) {
 	result := usersDB[user.Id]
-	fmt.Print("repo entrada", result.Id)
 	if result == nil {
-
 		return nil, errors.NewNotFoundError(fmt.Sprintf("user %d not found", user.Id))
 	}
-
 	user.Id = result.Id
 	user.FirstName = result.FirstName
 	user.LastName = result.LastName
