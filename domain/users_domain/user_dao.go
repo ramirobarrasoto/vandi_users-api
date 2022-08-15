@@ -2,8 +2,12 @@ package users_domain
 
 import (
 	"fmt"
-	"vandi_users-api/utils/date_utils"
+	"vandi_users-api/datasources/mysql/users_db"
 	"vandi_users-api/utils/errors"
+)
+
+const (
+	queryInsertUser = "INSERT INTO users(first_name, last_name, email, date_created) VALUES (?, ?, ?, ?);"
 )
 
 //here we have the conection with the DB
@@ -37,17 +41,44 @@ func (user *User) PutUser(id int64) (*User, *errors.RestErr) {
 }
 
 func (user *User) SaveUser() *errors.RestErr {
-	current := usersDB[user.Id]
 
-	if current != nil {
-		if current.Email == user.Email {
-			return errors.NewBadRequestError(fmt.Sprintf("email %s already registered", user.Email))
-		}
-		return errors.NewBadRequestError(fmt.Sprintf("user %d already exists", user.Id))
+	statement, err := users_db.Client.Prepare(queryInsertUser)
+	if err != nil {
+		return errors.NewInternalServerError(err.Error())
 	}
 
-	user.DateCreated = date_utils.GetNowString()
-	usersDB[user.Id] = user
+	defer statement.Close()
+
+	insertResult, err := statement.Exec(user.FirstName, user.LastName, user.Email, user.DateCreated)
+
+	if err != nil {
+		return errors.NewInternalServerError(
+			fmt.Sprintf("Error when trying to save the user: %s", err.Error()),
+		)
+	}
+
+	userId, err := insertResult.LastInsertId()
+
+	if err != nil {
+		return errors.NewInternalServerError(
+			fmt.Sprintf("Error when trying to save the user: %s", err.Error()),
+		)
+	}
+
+	user.Id = userId
+	/*
+		current := usersDB[user.Id]
+
+		if current != nil {
+			if current.Email == user.Email {
+				return errors.NewBadRequestError(fmt.Sprintf("email %s already registered", user.Email))
+			}
+			return errors.NewBadRequestError(fmt.Sprintf("user %d already exists", user.Id))
+		}
+
+		user.DateCreated = date_utils.GetNowString()
+		usersDB[user.Id] = user
+	*/
 	return nil
 }
 

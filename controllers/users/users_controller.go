@@ -3,6 +3,7 @@ package users
 import (
 	"net/http"
 	"strconv"
+	"vandi_users-api/datasources/mysql/users_db"
 	"vandi_users-api/domain/users_domain"
 	"vandi_users-api/services"
 	"vandi_users-api/utils/errors"
@@ -14,6 +15,9 @@ var user users_domain.User
 var id int64
 
 func GetUser(c *gin.Context) {
+	if err := users_db.Client.Ping(); err != nil {
+		panic(err)
+	}
 
 	getData, getErr := services.GetUser(&user)
 
