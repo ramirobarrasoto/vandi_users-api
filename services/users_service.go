@@ -5,23 +5,23 @@ import (
 	"vandi_users-api/utils/errors"
 )
 
-func GetUser(user *user_domain.User) (map[int64]*user_domain.User, *errors.RestErr) {
+func GetUser(user *user_domain.User) *errors.RestErr {
 
-	result, err := user.GetUser()
+	err := user.GetUser()
 	if err != nil {
-		return nil, err
+		return err
 	}
-	return result, nil
+	return nil
 }
 
-func GetUserById(userId int64) (*user_domain.User, *errors.RestErr) {
+func GetUserById(userId int64) *errors.RestErr {
 
 	result := &user_domain.User{Id: userId}
-	user, err := result.GetUserById(userId)
+	err := result.GetUserById(userId)
 	if err != nil {
-		return nil, err
+		return err
 	}
-	return user, nil
+	return nil
 }
 
 func CreateUser(user user_domain.User) (*user_domain.User, *errors.RestErr) {

@@ -12,7 +12,7 @@ import (
 	"mysql_users_username":"root",
 	"mysql_users_password":"elMejor007$",
 	"mysql_users_host":"127.0.0.1:3306",
-	"mysql_users_schema":"user_db",
+	"mysql_users_schema":"users_db",
 */
 /*
 const (
@@ -38,7 +38,7 @@ func init() {
 		"root",
 		"elMejor007$",
 		"127.0.0.1:3306",
-		"user_db",
+		"users_db",
 	)
 	var err error
 	Client, err = sql.Open("mysql", datasourcesName)

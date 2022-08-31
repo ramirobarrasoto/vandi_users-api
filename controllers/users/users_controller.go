@@ -19,14 +19,14 @@ func GetUser(c *gin.Context) {
 		panic(err)
 	}
 
-	getData, getErr := services.GetUser(&user)
+	getErr := services.GetUser(&user)
 
 	if getErr != nil {
 		//TODO: handler the error please
 		return
 	}
 
-	c.JSON(http.StatusOK, getData)
+	c.JSON(http.StatusOK, nil)
 }
 
 func GetUserById(c *gin.Context) {
@@ -39,7 +39,7 @@ func GetUserById(c *gin.Context) {
 		return
 	}
 
-	user, getErr := services.GetUserById(userId)
+	getErr := services.GetUserById(userId)
 	if getErr != nil {
 		err := errors.NewNotFoundError("user not found")
 		c.JSON(getErr.Status, err)
